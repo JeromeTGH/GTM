@@ -1,6 +1,7 @@
 //process.env.NODE_ENV = 'production';
 
 const express = require('express')
+const routesUtilisateur = require('./routes/routes.utilisateur')
 
 require('dotenv').config({ path: './config/.env' })
 require('./utils/bdd.js')
@@ -18,9 +19,10 @@ const app = express()
 // Middlewares
 
 // Routes
-app.all('*', (req, res) => {
+app.use('/api/utilisateurs', routesUtilisateur)
+/* app.all('*', (req, res) => {
     res.status(200).json(JSON.parse('{"test": "ok !"}'))
-})
+})*/
 
 // Serveur
 app.listen(process.env.PORT, () => {
