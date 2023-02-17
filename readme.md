@@ -8,7 +8,7 @@
 <a name="fic-rep-a-creer"></a>
 ## Fichiers/répertoires à créer
 
-Fichier `./config/.env`, contient :
+Fichier `./config/.env`, devra contenir les éléments suivants :
 
 | Commentaire | Code |
 | ------------- |:-------------:|

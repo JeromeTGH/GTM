@@ -1,6 +1,7 @@
 //process.env.NODE_ENV = 'production';
 
 const express = require('express')
+const bodyParser = require('body-parser')
 const routesUtilisateur = require('./routes/routes.utilisateur')
 
 require('dotenv').config({ path: './config/.env' })
@@ -17,12 +18,10 @@ console.log("");
 const app = express()
 
 // Middlewares
+app.use(bodyParser.json())
 
 // Routes
 app.use('/api/utilisateurs', routesUtilisateur)
-/* app.all('*', (req, res) => {
-    res.status(200).json(JSON.parse('{"test": "ok !"}'))
-})*/
 
 // Serveur
 app.listen(process.env.PORT, () => {
