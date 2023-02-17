@@ -1,7 +1,15 @@
 const routeur = require('express').Router()
-const controleurAuth = require('../controleurs/controleur.auth')
+// Se rajoute donc à la suite de : /api/utilisateurs
 
-// Se rajoute à la suite de : /api/utilisateurs
-routeur.post('/inscription', controleurAuth.inscription)
+const controleurAuth = require('../controleurs/controleur.auth')
+const controleurUtilisateur = require('../controleurs/controleur.utilisateur')
+
+
+// PARTIE "authentification"
+routeur.post('/postInscription', controleurAuth.inscription)
+
+// PARTIE "utilisateur"
+routeur.get('/getTousLesUtilisateurs', controleurUtilisateur.getTousLesUtilisateurs)
+
 
 module.exports = routeur
