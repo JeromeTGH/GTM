@@ -12,6 +12,6 @@ routeur.post('/postInscription', controleurAuth.inscription)            // (C)re
 routeur.get('/getAll', controleurUtilisateur.getAll)
 routeur.get('/getOne/:userID', controleurUtilisateur.getOne)            // (R)ead
 routeur.put('/updateOne/:userID', controleurUtilisateur.updateOne)      // (U)pdate
-
+routeur.delete('/deleteOne/:userID', controleurUtilisateur.deleteOne)   // (D)elete
 
 module.exports = routeur

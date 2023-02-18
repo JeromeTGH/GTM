@@ -8,26 +8,20 @@ const schemaUtilisateur = new mongoose.Schema(
             type: String,
             required: true,
             minLength: 3,
-            maxLength: 64,
-            unique: true,
-            trim: true
+            maxLength: 64
         },
         email: {
             type: String,
             required: true,
             validate: [isEmail],
-            lowercase: true,
-            trim: true
+            unique: true,
+            lowercase: true
         },
         password: {
             type: String,
             required: true,
             minLength: 6,
             max: 256
-        },
-        nomprenom: {
-            type: String,
-            max: 1024
         }
     },
     {
