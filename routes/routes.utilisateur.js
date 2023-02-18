@@ -6,11 +6,12 @@ const controleurUtilisateur = require('../controleurs/controleur.utilisateur')
 
 
 // PARTIE "authentification"
-routeur.post('/postInscription', controleurAuth.inscription)
+routeur.post('/postInscription', controleurAuth.inscription)            // (C)reate
 
 // PARTIE "utilisateur"
 routeur.get('/getAll', controleurUtilisateur.getAll)
-routeur.get('/getOne/:userID', controleurUtilisateur.getOne)
+routeur.get('/getOne/:userID', controleurUtilisateur.getOne)            // (R)ead
+routeur.put('/updateOne/:userID', controleurUtilisateur.updateOne)      // (U)pdate
 
 
 module.exports = routeur

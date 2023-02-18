@@ -24,6 +24,10 @@ const schemaUtilisateur = new mongoose.Schema(
             required: true,
             minLength: 6,
             max: 256
+        },
+        nomprenom: {
+            type: String,
+            max: 1024
         }
     },
     {
