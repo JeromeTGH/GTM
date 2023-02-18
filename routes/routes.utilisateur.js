@@ -9,7 +9,8 @@ const controleurUtilisateur = require('../controleurs/controleur.utilisateur')
 routeur.post('/postInscription', controleurAuth.inscription)
 
 // PARTIE "utilisateur"
-routeur.get('/getTousLesUtilisateurs', controleurUtilisateur.getTousLesUtilisateurs)
+routeur.get('/getAll', controleurUtilisateur.getAll)
+routeur.get('/getOne/:userID', controleurUtilisateur.getOne)
 
 
 module.exports = routeur

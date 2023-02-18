@@ -17,6 +17,6 @@ module.exports.inscription = async (req, res) => {
         res.status(201).json({ idNouvelUtilisateur: nouvelUtilisateur._id })
     }
     catch (err) {
-        res.status(200).send({ err })
+        res.status(200).json({ err })
     }
 }
