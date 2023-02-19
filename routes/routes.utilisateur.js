@@ -15,5 +15,6 @@ routeur.put('/updateOne/:userID', controleurUtilisateur.updateOne)      // (U)pd
 routeur.delete('/deleteOne/:userID', controleurUtilisateur.deleteOne)   // (D)elete
 routeur.patch('/addTask/:userID', controleurUtilisateur.addTask)
 routeur.patch('/removeTask/:userID', controleurUtilisateur.removeTask)
+routeur.patch('/updateTask/:userID', controleurUtilisateur.updateTask)
 
 module.exports = routeur
