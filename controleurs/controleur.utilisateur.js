@@ -64,3 +64,47 @@ module.exports.deleteOne = async (req, res) => {
         res.status(500).json({ err })
     }
 }
+
+// Ajout fonction addTask dans API
+module.exports.addTask = async (req, res) => {
+    if (!ObjectID.isValid(req.params.userID))
+        return res.status(400).send(`ID [${req.params.userID}] inconnu …`)
+
+    try {
+        const tableau = [req.body.libelle, req.body.description]
+
+        await ModeleUtilisateur.findByIdAndUpdate(
+            req.params.userID,
+            { $addToSet: { tachespossibles: tableau } },
+            { new: true }
+        )
+            .select(['-password', '-email'])
+            .then((data) => res.status(200).json(data))
+            .catch((err) => res.status(500).json({ err }))
+    }
+    catch (err) {
+        res.status(500).json({ err })
+    }
+}
+
+// Ajout fonction removeTask dans API
+module.exports.removeTask = async (req, res) => {
+    if (!ObjectID.isValid(req.params.userID))
+        return res.status(400).send(`ID [${req.params.userID}] inconnu …`)
+
+    try {
+        const tableau = [req.body.libelle, req.body.description]
+
+        await ModeleUtilisateur.findByIdAndUpdate(
+            req.params.userID,
+            { $pull: { tachespossibles: tableau } },
+            { new: true }
+        )
+            .select(['-password', '-email'])
+            .then((data) => res.status(200).json(data))
+            .catch((err) => res.status(500).json({ err }))
+    }
+    catch (err) {
+        res.status(500).json({ err })
+    }
+}

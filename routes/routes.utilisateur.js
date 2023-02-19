@@ -13,5 +13,7 @@ routeur.get('/getAll', controleurUtilisateur.getAll)
 routeur.get('/getOne/:userID', controleurUtilisateur.getOne)            // (R)ead
 routeur.put('/updateOne/:userID', controleurUtilisateur.updateOne)      // (U)pdate
 routeur.delete('/deleteOne/:userID', controleurUtilisateur.deleteOne)   // (D)elete
+routeur.patch('/addTask/:userID', controleurUtilisateur.addTask)
+routeur.patch('/removeTask/:userID', controleurUtilisateur.removeTask)
 
 module.exports = routeur
