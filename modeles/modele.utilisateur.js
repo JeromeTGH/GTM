@@ -22,6 +22,9 @@ const schemaUtilisateur = new mongoose.Schema(
             required: true,
             minLength: 6,
             max: 256
+        },
+        tachespossibles: {
+            type: [[String, String]]
         }
     },
     {
