@@ -115,9 +115,20 @@ module.exports.updateTask = async (req, res) => {
     if (!ObjectID.isValid(req.params.userID))
         return res.status(400).send(`ID [${req.params.userID}] inconnu …`)
 
+
+    if (req.body.old_libelle === undefined)
+        return res.status(400).send(`Paramètre "old_libelle" manquant …`)
+    if (req.body.old_description === undefined)
+        return res.status(400).send(`Paramètre "old_description" manquant …`)
+    if (req.body.new_libelle === undefined)
+        return res.status(400).send(`Paramètre "new_libelle" manquant …`)
+    if (req.body.new_description === undefined)
+        return res.status(400).send(`Paramètre "new_description" manquant …`)
+
+
     try {
-        const tableau1 = [req.body.libelle1, req.body.description1]
-        const tableau2 = [req.body.libelle2, req.body.description2]
+        const tableau1 = [req.body.old_libelle, req.body.old_description]
+        const tableau2 = [req.body.new_libelle, req.body.new_description]
 
         const filtre = { _id: req.params.userID }
         const update = { $set: { "tachespossibles.$[elem]": tableau2 } }
@@ -131,29 +142,6 @@ module.exports.updateTask = async (req, res) => {
             .select(['-password', '-email'])
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json({ err }))
-
-
-        /* ModeleUtilisateur.findById(
-            req.params.userID,
-            (err, data) => {
-                const laTacheCible = data.tachespossibles.find(
-                    (tache) => tache[0] === req.body.libelle1 && tache[1] === req.body.description1
-                )
-
-                if (!laTacheCible) res.status(400).send(`Tâche inconnue …`)
-
-                laTacheCible[0] = req.body.libelle2
-                laTacheCible[1] = req.body.description2
-
-                console.log(data)
-
-                return data.save((err) => {
-                    console.log(err)
-                    if (!err) return res.status(200).json(data)
-                    if (err) res.status(500).json({ message1: err })
-                })
-            }
-        ) */
     }
     catch (err) {
         res.status(500).json({ message2: err })
