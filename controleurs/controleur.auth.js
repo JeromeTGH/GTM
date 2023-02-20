@@ -60,3 +60,24 @@ module.exports.logout = async (req, res) => {
         res.status(400).json(err)
     }
 }
+
+// Ajout fonction getUserIdSiCookieJwtConforme dans API
+module.exports.getUserIdSiCookieJwtConforme = (req, res) => {
+    const token = req.cookies.cookieJetonJWT
+
+    if (token) {
+        // Tout d'abord, on vérifie que le cookie qu'on lit ne contient pas un "faux" token (c'est à dire : le bon cookie, mais avec un mauvais ID encodé dedans)
+        jwt.verify(token, process.env.CLEF_SECRETE, async (err, data) => {
+            if (err) {
+                console.log(err)
+                res.status(200).send("0")
+            } else {
+                console.log(`ID utilisateur (auth. requis) : ${data.id}`);
+                res.status(200).send(res.locals.user._id)
+            }
+        })
+    } else {
+        console.log('Aucun cookie/token trouvé (auth. requis)')
+        res.status(200).send("0")
+    }
+}
