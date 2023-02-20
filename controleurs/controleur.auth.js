@@ -3,6 +3,13 @@ const jwt = require('jsonwebtoken')
 
 const delaiExpirationCookie = 3 * 24 * 3600 * 1000      // On est en millisecondes ; là, 3 * 24 * 3600 * 1000 équivaut à 3 jours, en fait
 
+// Fonction creerUnTokenDepuis(), pour créer un jeton depuis l'id de l'utilisateur
+const creerUnTokenDepuis = (id) => {
+    return jwt.sign({ id }, process.env.CLEF_SECRETE, {
+        expiresIn: delaiExpirationCookie                // En fait, le token sera égal à un objet, contenant entre autre chose
+    })                                                  // un champ "id", avec l'ID de l'utilisateur encodé dedans
+}
+
 // Ajout fonction inscription dans API
 module.exports.inscription = async (req, res) => {
     try {
@@ -52,11 +59,4 @@ module.exports.logout = async (req, res) => {
     catch (err) {
         res.status(400).json(err)
     }
-}
-
-// Fonction creerUnTokenDepuis(), pour créer un jeton depuis l'id de l'utilisateur
-const creerUnTokenDepuis = (id) => {
-    return jwt.sign({ id }, process.env.CLEF_SECRETE, {
-        expiresIn: delaiExpirationCookie
-    })
 }

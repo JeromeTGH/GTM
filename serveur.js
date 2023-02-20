@@ -2,10 +2,11 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const routesUtilisateur = require('./routes/routes.utilisateur')
-
 require('dotenv').config({ path: './config/.env' })
 require('./utils/bdd.js')
+const { recupInfosUserSiBienConnecte } = require('./midllewares/middleware.auth')
 
 // Message d'invite
 console.log("");
@@ -19,8 +20,10 @@ const app = express()
 
 // Middlewares
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 // Routes
+app.use('*', recupInfosUserSiBienConnecte)
 app.use('/api/utilisateurs', routesUtilisateur)
 
 // Serveur
