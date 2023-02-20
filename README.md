@@ -1,4 +1,4 @@
-# Projet GTM (backend)
+# Projet GTM (backend) => en cours de développement
 
 Le "Projet GTM (backend) est tout simplement un "Gestionnaire de Taches Mensuelles", développé à titre personnel, pour un usage personnel. C'est avant tout un projet d'apprentissage de NodeJS et quelque uns de ses modules (express, mongoose, bcrypt, …), ainsi que de MongoDB.
 
