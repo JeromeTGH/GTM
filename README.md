@@ -29,6 +29,7 @@ Avant de pouvoir exécuter ce projet, il faudra penser à rajouter certains fich
 | ------------- |:-------------:|
 | Port d'accès au __serveur NodeJS__ (5000, par défaut) | PORT=5000 |
 | __Connection string__, pour l'accès à la base de données | DB_CONNECTION_STRING=mongodb+srv://username:pass@cluster/dbname  |
+| __Clef secrète__, pour json-web-token (jwt)) | CLEF_SECRETE=xxxxx |
 
 <a name="installation"></a>
 ## Installation
