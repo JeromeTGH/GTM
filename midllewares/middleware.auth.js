@@ -6,7 +6,8 @@ module.exports.recupInfosUtilisateurSiConnecte = (req, res, next) => {
     const token = req.cookies.cookieJetonJWT
 
     if (token) {
-        // Tout d'abord, on vérifie que le cookie qu'on lit ne contient pas un "faux" token (c'est à dire : le bon cookie, mais avec un mauvais ID encodé dedans)
+        // Tout d'abord, on vérifie que le cookie qu'on lit ne contient pas de mauvais ID encodé dedans
+        // (pour éviter toute tentative de hack, par ce biais)
         jwt.verify(token, process.env.CLEF_SECRETE, async (err, data) => {
             if (err) {
                 res.locals.user = null

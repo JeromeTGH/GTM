@@ -66,18 +66,16 @@ module.exports.getUserIdSiCookieJwtConforme = (req, res) => {
     const token = req.cookies.cookieJetonJWT
 
     if (token) {
-        // Tout d'abord, on vérifie que le cookie qu'on lit ne contient pas un "faux" token (c'est à dire : le bon cookie, mais avec un mauvais ID encodé dedans)
+        // Tout d'abord, on vérifie que le cookie qu'on lit ne contient pas, après décodage, un mauvais ID à l'intérieur
+        // (pour parer toute éventuelle tentative de hack, en ce sens)
         jwt.verify(token, process.env.CLEF_SECRETE, async (err, data) => {
             if (err) {
-                console.log(err)
-                res.status(200).send("0")
+                res.status(200).send("0")                   // Si l'ID est incorrect, par rapport à celui attendu, on revoit simplement "0"
             } else {
-                console.log(`ID utilisateur (auth. requis) : ${data.id}`);
                 res.status(200).send(res.locals.user._id)
             }
         })
     } else {
-        console.log('Aucun cookie/token trouvé (auth. requis)')
-        res.status(200).send("0")
+        res.status(200).send("0")                           // Si le cookie est absent, on revoit "0" là aussi, pour signifier l'absence d'ID trouvé
     }
 }
