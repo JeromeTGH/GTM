@@ -10,8 +10,8 @@ const creerUnTokenDepuis = (id) => {
     })                                                  // un champ "id", avec l'ID de l'utilisateur encodé dedans
 }
 
-// Ajout fonction inscription dans API
-module.exports.inscription = async (req, res) => {
+// Ajout fonction createUser dans API
+module.exports.createUser = async (req, res) => {
     try {
         const pseudo = req.body.pseudo
         const email = req.body.email

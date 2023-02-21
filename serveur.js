@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const routesRacine = require('./routes/routes.racine')
 const routesUtilisateur = require('./routes/routes.utilisateur')
 require('dotenv').config({ path: './config/.env' })
-require('./utils/bdd.js')
+require('./utils/bdd.util.js')
 const { recupInfosUtilisateurSiConnecte } = require('./middlewares/middleware.auth')
 
 // Message d'invite

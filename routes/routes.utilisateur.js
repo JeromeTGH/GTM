@@ -5,7 +5,7 @@ const controleurAuth = require('../controleurs/controleur.auth')
 const controleurUtilisateur = require('../controleurs/controleur.utilisateur')
 
 // PARTIE "authentification"
-routeur.post('/postInscription', controleurAuth.inscription)            // (C)reate
+routeur.post('/postCreateUser', controleurAuth.createUser)              // (C)reate
 routeur.post('/postLogin', controleurAuth.login)
 routeur.post('/postLogout', controleurAuth.logout)
 
