@@ -13,15 +13,14 @@ const schemaUtilisateur = new mongoose.Schema(
         email: {
             type: String,
             required: true,
-            validate: [isEmail],
             unique: true,
+            validate: [isEmail],
             lowercase: true
         },
         password: {
             type: String,
             required: true,
-            minLength: 6,
-            max: 256
+            select: false                   // Pour masquer ce champ, lorsqu'on fera des requêtes de type SELECT, ensuite
         },
         tachespossibles: {
             type: [[String, String]]
