@@ -1,7 +1,8 @@
 const ModeleUtilisateur = require('../modeles/modele.utilisateur')
 const jwt = require('jsonwebtoken')
-
 const delaiExpirationCookie = 3 * 24 * 3600 * 1000      // On est en millisecondes ; là, 3 * 24 * 3600 * 1000 équivaut à 3 jours, en fait
+
+const { erreurCreationNouvelUtilisateur } = require('../utils/erreurs.utils')
 
 // Fonction creerUnTokenDepuis(), pour créer un jeton depuis l'id de l'utilisateur
 const creerUnTokenDepuis = (id) => {
@@ -28,7 +29,8 @@ module.exports.createUser = async (req, res) => {
         res.status(201).json({ idNouvelUtilisateur: nouvelUtilisateur._id })
     }
     catch (err) {
-        res.status(400).json(err)
+        const messagesErreur = erreurCreationNouvelUtilisateur(err)
+        res.status(400).json(messagesErreur)
     }
 }
 
