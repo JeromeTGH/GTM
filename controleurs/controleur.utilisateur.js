@@ -56,8 +56,7 @@ module.exports.deleteOne = async (req, res) => {
     try {
         const filtre = { _id: req.params.userID }
 
-        await ModeleUtilisateur.remove(filtre)
-            .exec()
+        await ModeleUtilisateur.deleteOne(filtre)
             .then((data) => res.status(200).json(data))
             .catch((err) => res.status(500).json({ err }))
     }

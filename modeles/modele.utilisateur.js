@@ -7,20 +7,22 @@ const schemaUtilisateur = new mongoose.Schema(
         pseudo: {
             type: String,
             required: true,
-            minLength: 3,
-            maxLength: 64
+            minlength: 3,
+            maxlength: 64
         },
         email: {
             type: String,
             required: true,
             unique: true,
             validate: [isEmail],
-            lowercase: true
+            lowercase: true,
+            maxlength: 256
         },
         password: {
             type: String,
             required: true,
-            select: false                   // Pour masquer ce champ, lorsqu'on fera des requêtes de type SELECT, ensuite
+            minlength: 6,           // 6 caractères minimum pour le mot de passe, avant encodage dans la BDD
+            maxlength: 64
         },
         tachespossibles: {
             type: [[String, String]]
