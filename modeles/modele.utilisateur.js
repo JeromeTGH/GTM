@@ -16,13 +16,15 @@ const schemaUtilisateur = new mongoose.Schema(
             unique: true,
             validate: [isEmail],
             lowercase: true,
-            maxlength: 256
+            maxlength: 256,
+            select: false
         },
         password: {
             type: String,
             required: true,
             minlength: 6,           // 6 caractères minimum pour le mot de passe, avant encodage dans la BDD
-            maxlength: 64
+            maxlength: 64,
+            select: false
         },
         estActif: {
             type: Boolean,

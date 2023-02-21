@@ -41,7 +41,7 @@ module.exports.login = async (req, res) => {
         const email = req.body.email
         const password = req.body.password
 
-        const utilisateur = await ModeleUtilisateur.findOne({ email: email })
+        const utilisateur = await ModeleUtilisateur.findOne({ email: email }).select('password')
         if (utilisateur) {
             const auth = await bcrypt.compare(password, utilisateur.password)
 
