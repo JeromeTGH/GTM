@@ -7,7 +7,7 @@ const routesRacine = require('./routes/routes.racine')
 const routesUtilisateur = require('./routes/routes.utilisateur')
 require('dotenv').config({ path: './config/.env' })
 require('./utils/bdd.js')
-const { recupInfosUtilisateurSiConnecte } = require('./midllewares/middleware.auth')
+const { recupInfosUtilisateurSiConnecte } = require('./middlewares/middleware.auth')
 
 // Message d'invite
 console.log("");
