@@ -24,6 +24,11 @@ const schemaUtilisateur = new mongoose.Schema(
             minlength: 6,           // 6 caractères minimum pour le mot de passe, avant encodage dans la BDD
             maxlength: 64
         },
+        estActif: {
+            type: Boolean,
+            required: true,
+            default: true
+        },
         tachespossibles: {
             type: [[String, String]]
         }
