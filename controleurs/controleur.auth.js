@@ -2,7 +2,8 @@ const ModeleUtilisateur = require('../modeles/modele.utilisateur')
 const jwt = require('jsonwebtoken')
 const delaiExpirationCookie = 3 * 24 * 3600 * 1000      // On est en millisecondes ; là, 3 * 24 * 3600 * 1000 équivaut à 3 jours, en fait
 
-const { erreurCreationNouvelUtilisateur } = require('../utils/erreurs.utils')
+const bcrypt = require('bcrypt')
+const { erreurCreationNouvelUtilisateur, erreurDeConnexion } = require('../utils/erreurs.utils')
 
 // Fonction creerUnTokenDepuis(), pour créer un jeton depuis l'id de l'utilisateur
 const creerUnTokenDepuis = (id) => {
@@ -40,15 +41,28 @@ module.exports.login = async (req, res) => {
         const email = req.body.email
         const password = req.body.password
 
-        const utilisateur = await ModeleUtilisateur.login(email, password)
-        const token = creerUnTokenDepuis(utilisateur._id)
+        const utilisateur = await ModeleUtilisateur.findOne({ email: email })
+        if (utilisateur) {
+            const auth = await bcrypt.compare(password, utilisateur.password)
 
-        res.cookie('cookieJetonJWT', token, { httpOnly: true, maxAge: delaiExpirationCookie })
-        res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id })
+            if (auth) {
+                const token = creerUnTokenDepuis(utilisateur._id)
+
+                res.cookie('cookieJetonJWT', token, { httpOnly: true, maxAge: delaiExpirationCookie })
+                res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id })
+            } else {
+                console.log("password incorrect");
+                throw new Error("Password incorrect, désolé …")
+            }
+
+        } else {
+            throw new Error("Email incorrect, désolé …")
+        }
     }
     catch (err) {
-        console.log(err)
-        res.status(400).json({ erreur: err })
+        const messagesErreur = erreurDeConnexion(err)
+        console.log(err);
+        res.status(400).json(messagesErreur)
     }
 }
 

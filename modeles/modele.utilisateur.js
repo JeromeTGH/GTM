@@ -40,19 +40,6 @@ schemaUtilisateur.pre('save', async function (next) {
     next()
 })
 
-// Fonction de connexion
-schemaUtilisateur.statics.login = async function (email, password) {
-    const user = await this.findOne({ email })
-    if (user) {
-        const auth = await bcrypt.compare(password, user.password)
-        if (auth) {
-            return user
-        }
-        throw Error('Mot de passe incorrect, désolé …')
-    }
-    throw Error('Email incorrect, désolé …')
-}
-
 // Enregistrement
 const ModeleUtilisateur = mongoose.model('utilisateur', schemaUtilisateur)
 module.exports = ModeleUtilisateur
