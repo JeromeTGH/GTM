@@ -4,7 +4,6 @@ const routeur = require('express').Router()
 const controleurAuth = require('../controleurs/controleur.auth')
 const controleurUtilisateur = require('../controleurs/controleur.utilisateur')
 const controleurTaches = require('../controleurs/controleur.taches')
-const controleurListesDeTaches = require('../controleurs/controleur.listestaches')
 
 // PARTIE "authentification"
 routeur.post('/postCreateUser', controleurAuth.createUser)              // (C)reate
@@ -22,13 +21,5 @@ routeur.patch('/addTask/:userID', controleurTaches.addTask)
 routeur.patch('/removeTask/:userID', controleurTaches.removeTask)
 routeur.patch('/updateTask/:userID', controleurTaches.updateTask)
 
-// PARTIE "taches à faire, pour chaque utilisateur"
-routeur.patch('/addNouvelleListeDeTachesAfaire/:userID', controleurListesDeTaches.addNewTaskList)
-//routeur.patch('/getListeDeTachesAfaire/:listeID', controleurListesDeTaches.getOneTaskList)
-//routeur.patch('/getAllListesDeTachesAfaire/', controleurListesDeTaches.getAllTaskList)
-//routeur.patch('/removeListeDeTachesAfaire/:listeID', controleurListesDeTaches.removeOneTaskList)
-//routeur.patch('/updateListeDeTachesAfaire/:listeID', controleurListesDeTaches.updateOneTaskList)
-//routeur.patch('/postClotureListeDeTachesAfaire/:listeID', controleurListesDeTaches.closeOneTaskList)
-
-
+// Fin, pour cette partie
 module.exports = routeur

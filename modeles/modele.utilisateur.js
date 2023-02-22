@@ -36,7 +36,7 @@ const schemaUtilisateur = new mongoose.Schema(
         },
         tachespossibles: {
             type: [[String, String]]
-        },
+        } /*,
         listesDeTachesAfaire: {
             type: [
                 {
@@ -55,7 +55,7 @@ const schemaUtilisateur = new mongoose.Schema(
                     }
                 }
             ]
-        }
+        } */
     },
     {
         timestamps: true
