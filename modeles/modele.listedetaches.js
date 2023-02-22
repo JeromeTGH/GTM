@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 
 const schemaListeDeTaches = new mongoose.Schema(
     {
+        IDutilisateur: {
+            type: String,
+            required: true
+        },
         tachesAfaire: {
             type: [
                 {
@@ -18,8 +22,7 @@ const schemaListeDeTaches = new mongoose.Schema(
             ]
         },
         libelleMoisAnnee: {
-            type: String,
-            unique: true
+            type: String
         },
         timestampCloture: {
             type: Number
