@@ -36,6 +36,22 @@ const schemaUtilisateur = new mongoose.Schema(
         },
         tachespossibles: {
             type: [[String, String]]
+        },
+        listesDeTachesAfaire: {
+            type: [
+                {
+                    tachesAfaire: {
+                        type: [String, String, Boolean]
+                    },
+                    libelleMoisAnnee: {
+                        type: String,
+                        unique: true
+                    },
+                    timestampCloture: {
+                        type: Number
+                    }
+                }
+            ]
         }
     },
     {
