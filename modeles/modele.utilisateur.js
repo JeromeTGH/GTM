@@ -8,7 +8,8 @@ const schemaUtilisateur = new mongoose.Schema(
             type: String,
             required: true,
             minlength: 3,
-            maxlength: 64
+            maxlength: 64,
+            trim: true              // Permet d'enlever les éventuels espaces avant et/ou après le contenu
         },
         email: {
             type: String,
@@ -17,14 +18,16 @@ const schemaUtilisateur = new mongoose.Schema(
             validate: [isEmail],
             lowercase: true,
             maxlength: 256,
-            select: false
+            select: false,
+            trim: true
         },
         password: {
             type: String,
             required: true,
             minlength: 6,           // 6 caractères minimum pour le mot de passe, avant encodage dans la BDD
             maxlength: 64,
-            select: false
+            select: false,
+            trim: true
         },
         estActif: {
             type: Boolean,
