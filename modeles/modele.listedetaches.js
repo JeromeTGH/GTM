@@ -31,7 +31,7 @@ const schemaListeDeTaches = new mongoose.Schema(
 )
 
 // Enregistrement
-const ModeleListeDeTaches = mongoose.model('utilisateur', schemaListeDeTaches)
+const ModeleListeDeTaches = mongoose.model('listedetache', schemaListeDeTaches)
 module.exports = ModeleListeDeTaches
 
 
