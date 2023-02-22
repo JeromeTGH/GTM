@@ -87,3 +87,52 @@ module.exports.getOneTaskList = async (req, res) => {
         res.status(500).json(err)
     }
 }
+
+// Ajout fonction removeOneTaskList dans API
+module.exports.removeOneTaskList = async (req, res) => {
+    if (!ObjectID.isValid(req.params.listeID))
+        return res.status(400).send(`ID [${req.params.listeID}] inconnu …`)
+
+    try {
+        ModeleListeDeTaches.findByIdAndDelete(req.params.listeID)
+            .then((data) => res.status(200).json(data))
+            .catch((err) => {
+                console.log(err)
+                res.status(500).json(err)
+            })
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
+// Ajout fonction updateOneTaskList dans API
+module.exports.updateOneTaskList = async (req, res) => {
+    if (!ObjectID.isValid(req.params.listeID))
+        return res.status(400).send(`ID [${req.params.listeID}] inconnu …`)
+
+    if (req.body.timestampCloture === undefined)
+        return res.status(400).send(`Paramètre "timestampCloture" manquant …`)
+
+    try {
+
+        /* const filtre = { _id: req.params.userID }
+        const champsAmettreAjour = {}
+
+        if (req.body.pseudo !== undefined)
+            champsAmettreAjour['pseudo'] = req.body.pseudo
+        if (req.body.estActif !== undefined)
+            champsAmettreAjour['estActif'] = req.body.estActif
+
+        await ModeleUtilisateur.findOneAndUpdate(filtre, champsAmettreAjour, { new: true })     // Pour retourner l'élément APRÈS avoir fait l'update
+            .then((data) => res.status(200).json(data))
+            .catch((err) => res.status(500).json({ err })) */
+
+        res.status(200).json('En construction')
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
