@@ -4,7 +4,7 @@ const routeur = require('express').Router()
 const controleurListesDeTaches = require('../controleurs/controleur.listestaches')
 
 // PARTIE "taches à faire, pour chaque utilisateur"
-routeur.patch('/addNouvelleListeDeTachesAfaire/:userID', controleurListesDeTaches.addNewTaskList)
+routeur.post('/genereNouvelleListeDeTachesAfaire/:userID', controleurListesDeTaches.addNewTaskList)
 //routeur.patch('/getListeDeTachesAfaire/:listeID', controleurListesDeTaches.getOneTaskList)
 //routeur.patch('/getAllListesDeTachesAfaire/', controleurListesDeTaches.getAllTaskList)
 //routeur.patch('/removeListeDeTachesAfaire/:listeID', controleurListesDeTaches.removeOneTaskList)

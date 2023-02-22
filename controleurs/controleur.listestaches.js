@@ -6,6 +6,8 @@ module.exports.addNewTaskList = async (req, res) => {
     if (!ObjectID.isValid(req.params.userID))
         return res.status(400).send(`ID [${req.params.userID}] inconnu …`)
 
+    return res.status(200).json('En construction')
+
     const datetimeActuel = new Date(Date.now())
     const timestampActuel = datetimeActuel.getTime()
     const moisActuel = datetimeActuel.getMonth() + 1

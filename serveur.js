@@ -28,7 +28,7 @@ app.use('*', recupInfosUtilisateurSiConnecte)
 // Routes
 app.use('/', routesRacine)
 app.use('/api/utilisateurs', routesUtilisateur)
-app.use('/api/listesdetaches', routesUtilisateur)
+app.use('/api/listesdetaches', listesDeTaches)
 
 // Serveur
 app.listen(process.env.PORT, () => {
