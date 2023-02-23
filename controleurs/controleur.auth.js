@@ -15,19 +15,17 @@ const creerUnTokenDepuis = (id) => {
 // Ajout fonction createUser dans API
 module.exports.createUser = async (req, res) => {
     try {
-        const pseudo = req.body.pseudo
-        const email = req.body.email
-        const password = req.body.password
+        // Renseignement d'un modèle utilisateur
+        const nouvelUtilisateur = new ModeleUtilisateur({
+            pseudo: req.body.pseudo,
+            email: req.body.email,
+            password: req.body.password
+        })
 
-        const nouvelUtilisateur = await ModeleUtilisateur.create(
-            {
-                pseudo: pseudo,
-                email: email,
-                password: password
-            }
-        )
+        // Enregistrement en base (et récupération des infos, complétées avec l'id et autre)
+        const utilisateurCreeEnBase = await ModeleUtilisateur.create(nouvelUtilisateur)
 
-        res.status(201).json({ idNouvelUtilisateur: nouvelUtilisateur._id })
+        res.status(201).json({ idNouvelUtilisateur: utilisateurCreeEnBase._id })
     }
     catch (err) {
         const messagesErreur = erreurCreationNouvelUtilisateur(err)
@@ -42,16 +40,15 @@ module.exports.login = async (req, res) => {
         const password = req.body.password
 
         const utilisateur = await ModeleUtilisateur.findOne({ email: email }).select('password')
+
         if (utilisateur) {
             const auth = await bcrypt.compare(password, utilisateur.password)
 
             if (auth) {
                 const token = creerUnTokenDepuis(utilisateur._id)
-
                 res.cookie('cookieJetonJWT', token, { httpOnly: true, maxAge: delaiExpirationCookie })
                 res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id })
             } else {
-                console.log("password incorrect");
                 throw new Error("Password incorrect, désolé …")
             }
 
@@ -73,6 +70,7 @@ module.exports.logout = async (req, res) => {
         res.status(200).json({ deconnexion: "reussie" })
     }
     catch (err) {
+        console.log(err)
         res.status(400).json(err)
     }
 }
