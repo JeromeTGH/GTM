@@ -9,7 +9,7 @@ module.exports.addNewTaskList = async (req, res) => {
 
 
     // Génération du texte "moisAnnee"
-    const datetimeActuel = new Date(Date.now())
+    const datetimeActuel = new Date()
     const moisActuel = datetimeActuel.getMonth() + 1
     const moisAnnee = moisActuel + '-' + datetimeActuel.getFullYear()
 
@@ -116,20 +116,13 @@ module.exports.updateOneTaskList = async (req, res) => {
         return res.status(400).send(`Paramètre "timestampCloture" manquant …`)
 
     try {
-
-        /* const filtre = { _id: req.params.userID }
-        const champsAmettreAjour = {}
-
-        if (req.body.pseudo !== undefined)
-            champsAmettreAjour['pseudo'] = req.body.pseudo
-        if (req.body.estActif !== undefined)
-            champsAmettreAjour['estActif'] = req.body.estActif
-
-        await ModeleUtilisateur.findOneAndUpdate(filtre, champsAmettreAjour, { new: true })     // Pour retourner l'élément APRÈS avoir fait l'update
+        ModeleListeDeTaches.findByIdAndUpdate(
+            req.params.listeID,
+            { timestampCloture: req.body.timestampCloture },
+            { new: true }
+        )
             .then((data) => res.status(200).json(data))
-            .catch((err) => res.status(500).json({ err })) */
-
-        res.status(200).json('En construction')
+            .catch((err) => res.status(500).json(err))
     }
     catch (err) {
         console.log(err)
