@@ -15,15 +15,15 @@ const creerUnTokenDepuis = (id) => {
 // Ajout fonction createUser dans API
 module.exports.createUser = async (req, res) => {
     try {
-        // Renseignement d'un modèle utilisateur
-        const nouvelUtilisateur = new ModeleUtilisateur({
+        // Objet représentant les champs personnalisés, pour la création de ce nouvel utilisateur
+        const champsNouvelUtilisateur = {
             pseudo: req.body.pseudo,
             email: req.body.email,
             password: req.body.password
-        })
+        }
 
         // Enregistrement en base (et récupération des infos, complétées avec l'id et autre)
-        const utilisateurCreeEnBase = await nouvelUtilisateur.save()
+        const utilisateurCreeEnBase = await ModeleUtilisateur.create(champsNouvelUtilisateur)
 
         res.status(201).json({ idNouvelUtilisateur: utilisateurCreeEnBase._id })
     }
@@ -59,7 +59,7 @@ module.exports.login = async (req, res) => {
     catch (err) {
         const messagesErreur = erreurDeConnexion(err)
         console.log(err);
-        res.status(400).json(messagesErreur)
+        res.status(500).json(messagesErreur)
     }
 }
 
@@ -71,7 +71,7 @@ module.exports.logout = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(400).json(err)
+        res.status(500).json(err)
     }
 }
 
