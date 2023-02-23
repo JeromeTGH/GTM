@@ -9,7 +9,7 @@ routeur.get('/getAllListesDeTachesAfaire/:userID', controleurListesDeTaches.getA
 routeur.get('/getListeDeTachesAfaire/:listeID', controleurListesDeTaches.getOneTaskList)
 routeur.delete('/removeListeDeTachesAfaire/:listeID', controleurListesDeTaches.removeOneTaskList)
 routeur.put('/updateListeDeTachesAfaire/:listeID', controleurListesDeTaches.updateOneTaskList)
-routeur.patch('/updateUneTacheDansListeDeTachesAfaire/:listeID', controleurListesDeTaches.updateOneTaskinTaskList)
+routeur.patch('/updateUneTacheDansListeDeTachesAfaire/:listeID', controleurListesDeTaches.updateOneTaskInTaskList)
 
 // Fin, pour cette partie
 module.exports = routeur
