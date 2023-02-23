@@ -23,7 +23,7 @@ module.exports.createUser = async (req, res) => {
         })
 
         // Enregistrement en base (et récupération des infos, complétées avec l'id et autre)
-        const utilisateurCreeEnBase = await ModeleUtilisateur.create(nouvelUtilisateur)
+        const utilisateurCreeEnBase = await nouvelUtilisateur.save()
 
         res.status(201).json({ idNouvelUtilisateur: utilisateurCreeEnBase._id })
     }

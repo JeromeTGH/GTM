@@ -15,41 +15,29 @@ module.exports.addNewTaskList = async (req, res) => {
 
     try {
         // Récupère la liste de tâches préenregistrées, par cet utilisateur
-        const utilisateur = ModeleUtilisateur.findById(req.params.userID)
-            .then((data) => {
+        const utilisateur = await ModeleUtilisateur.findById(req.params.userID)
 
-                // Génération du tableau des tâches qu'il y aura à faire (à partir de la liste des tâches possibles, contenue dans le profil utilisateur)
-                let tableauDesTachesAFaire = []
-                data.tachespossibles.map(tache => {
-                    tableauDesTachesAFaire.push({
-                        libelleTache: tache[0],
-                        descriptionTache: tache[1],
-                        bTacheAccomplie: false
-                    })
-                })
-
-                // Génération du modèle de liste de tâches à faire
-                const nouvelleListeDeTachesAfaire = new ModeleListeDeTaches({
-                    IDutilisateur: req.params.userID,
-                    tachesAfaire: tableauDesTachesAFaire,
-                    libelleMoisAnnee: moisAnnee,
-                    timestampCloture: null
-                })
-
-                // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
-                nouvelleListeDeTachesAfaire.save()
-                    .then((data2) => {
-                        res.status(200).json(data2)
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                        res.status(500).json(err)
-                    })
+        // Génération du tableau des tâches qu'il y aura à faire (à partir de la liste des tâches possibles, contenue dans le profil utilisateur)
+        let tableauDesTachesAFaire = []
+        utilisateur.tachespossibles.map(tache => {
+            tableauDesTachesAFaire.push({
+                libelleTache: tache[0],
+                descriptionTache: tache[1],
+                bTacheAccomplie: false
             })
-            .catch((err) => {
-                console.log(err)
-                res.status(500).json(err)
-            })
+        })
+
+        // Génération du modèle de liste de tâches à faire
+        const nouvelleListeDeTachesAfaire = new ModeleListeDeTaches({
+            IDutilisateur: req.params.userID,
+            tachesAfaire: tableauDesTachesAFaire,
+            libelleMoisAnnee: moisAnnee,
+            timestampCloture: null
+        })
+
+        // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
+        const nouvelleTache = await nouvelleListeDeTachesAfaire.save()
+        res.status(200).json(nouvelleTache)
 
     }
     catch (err) {
@@ -94,12 +82,10 @@ module.exports.removeOneTaskList = async (req, res) => {
         return res.status(400).send(`ID [${req.params.listeID}] inconnu …`)
 
     try {
-        ModeleListeDeTaches.findByIdAndDelete(req.params.listeID)
-            .then((data) => res.status(200).json(data))
-            .catch((err) => {
-                console.log(err)
-                res.status(500).json(err)
-            })
+        const listeDeTache = await ModeleListeDeTaches.findByIdAndDelete(req.params.listeID)
+        // Même si le contenu de cet enregistrement est effectivement retourné "en sortie", il est désormais bel et bien supprimé en base
+        // (d'ailleurs, si on réappelait cette fonction, la valeur null sera alors renvoyée, prouvant bien que cette liste a bien été supprimée)
+        res.status(200).json(listeDeTache)
     }
     catch (err) {
         console.log(err)
@@ -116,13 +102,12 @@ module.exports.updateOneTaskList = async (req, res) => {
         return res.status(400).send(`Paramètre "timestampCloture" manquant …`)
 
     try {
-        ModeleListeDeTaches.findByIdAndUpdate(
+        const listeDeTache = await ModeleListeDeTaches.findByIdAndUpdate(
             req.params.listeID,
             { timestampCloture: req.body.timestampCloture },
             { new: true }
         )
-            .then((data) => res.status(200).json(data))
-            .catch((err) => res.status(500).json(err))
+        res.status(200).json(listeDeTache)
     }
     catch (err) {
         console.log(err)
