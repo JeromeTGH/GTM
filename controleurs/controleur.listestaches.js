@@ -114,3 +114,36 @@ module.exports.updateOneTaskList = async (req, res) => {
         res.status(500).json(err)
     }
 }
+
+// Ajout fonction updateOneTaskinTaskList dans API
+module.exports.updateOneTaskinTaskList = async (req, res) => {
+    if (!ObjectID.isValid(req.params.listeID))
+        return res.status(400).send(`ID liste [${req.params.listeID}] inconnu …`)
+
+    if (req.body.tacheID === undefined)
+        return res.status(400).send(`Paramètre "tacheID" manquant …`)
+
+    if (!ObjectID.isValid(req.body.tacheID))
+        return res.status(400).send(`ID tache dans liste [${req.body.tacheID}] inconnu …`)
+
+    if (req.body.bTacheAccomplie === undefined)
+        return res.status(400).send(`Paramètre "bTacheAccomplie" manquant …`)
+
+    try {
+        const listeDeTache = await ModeleListeDeTaches.findById(req.params.listeID)
+        const tacheVisee = listeDeTache.tachesAfaire.find(tache => tache._id.equals(req.body.tacheID))
+
+        if (!tacheVisee) {
+            return res.status(404).json({ "erreur": `Tache ID=${req.body.tacheID} non trouvé, donc pas possible de mettre à jour` })
+        }
+
+        tacheVisee.bTacheAccomplie = req.body.bTacheAccomplie
+
+        const listDeTacheMiseAjour = await listeDeTache.save()
+        res.status(200).send(listDeTacheMiseAjour)
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
