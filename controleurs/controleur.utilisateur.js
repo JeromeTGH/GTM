@@ -17,11 +17,14 @@ module.exports.getAll = async (req, res) => {
 // Ajout fonction getOne dans API
 module.exports.getOne = async (req, res) => {
     if (!ObjectID.isValid(req.params.userID))
-        return res.status(400).send(`ID [${req.params.userID}] inconnu …`)
+        return res.status(400).json({ "erreur": `ID=${req.params.userID} non trouvé en base, donc impossible de trouver l'utilisateur correspondant` })
 
     try {
         const utilisateur = await ModeleUtilisateur.findById(req.params.userID)
-        res.status(200).json(utilisateur)
+        if (!utilisateur)
+            res.status(400).json({ "erreur": `L'ID=${req.params.userID} ne correspond à aucun utilisateur en base (correspond à autre chose ou à un utilisateur supprimé)` })
+        else
+            res.status(200).json(utilisateur)
     }
     catch (err) {
         console.log(err)
@@ -33,13 +36,13 @@ module.exports.getOne = async (req, res) => {
 // Ajout fonction updateOne dans API
 module.exports.updateOne = async (req, res) => {
     if (!ObjectID.isValid(req.params.userID))
-        return res.status(400).json({ "err": `ID [${req.params.userID}] inconnu …` })
+        return res.status(400).json({ "erreur": `ID=${req.params.userID} non trouvé en base, donc impossible de trouver l'utilisateur correspondant` })
 
     if (req.body.pseudo === undefined && req.body.estActif === undefined)
-        return res.status(400).json({ "err": `Paramètre "pseudo" et/ou "estActif" manquant …` })
+        return res.status(400).json({ "erreur": `Paramètre "pseudo" et/ou "estActif" manquant …` })
 
-    const champsAmettreAjour = {}
-    if (req.body.pseudo !== undefined)
+    const champsAmettreAjour = {}                                   // Structure permettant de rendre optionnel l'un ou l'autre de ces paramètres,
+    if (req.body.pseudo !== undefined)                              // sans toutefois écraser les données existantes en base (si champ non ciblé)
         champsAmettreAjour['pseudo'] = req.body.pseudo
     if (req.body.estActif !== undefined)
         champsAmettreAjour['estActif'] = req.body.estActif
@@ -47,7 +50,10 @@ module.exports.updateOne = async (req, res) => {
     try {
         const utilisateurMisAjour = await ModeleUtilisateur.findByIdAndUpdate(req.params.userID, champsAmettreAjour, { new: true })
         // {new: true} : pour retourner l'élément APRÈS avoir fait l'update
-        res.status(200).json(utilisateurMisAjour)
+        if (!utilisateurMisAjour)
+            res.status(400).json({ "erreur": `La mise à jour de l'utilisateur a renvoyé une valeur nulle, et n'a donc pu se faire (vérifier si le userID envoyé est bon, par exemple)` })
+        else
+            res.status(200).json(utilisateurMisAjour)
     }
     catch (err) {
         console.log(err)
@@ -58,13 +64,16 @@ module.exports.updateOne = async (req, res) => {
 // Ajout fonction deleteOne dans API
 module.exports.deleteOne = async (req, res) => {
     if (!ObjectID.isValid(req.params.userID))
-        return res.status(400).send(`ID [${req.params.userID}] inconnu …`)
+        return res.status(400).json({ "erreur": `ID=${req.params.userID} non trouvé en base, donc impossible de trouver l'utilisateur correspondant` })
 
     try {
         const utilisateur = await ModeleUtilisateur.findByIdAndRemove(req.params.userID)
         // Le contenu de l'utilisateur est retourné cette fois encore, mais il est désormais bien supprimé en base
         // (si on réappelle cette fonction API, la valeur null sera alors retournée, prouvant que l'utilisateur a bien été supprimé)
-        res.status(200).json(utilisateur)
+        if (!utilisateur)
+            res.status(400).json({ "erreur": `La suppression de l'utilisateur a renvoyé une valeur nulle, et n'a donc pu se faire (vérifier si la suppression n'a pas déjà été faite, et si l'ID est bien celui d'un utilisateur existant)` })
+        else
+            res.status(200).json(utilisateur)
     }
     catch (err) {
         console.log(err)

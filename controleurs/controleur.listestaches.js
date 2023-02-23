@@ -134,7 +134,9 @@ module.exports.updateOneTaskinTaskList = async (req, res) => {
         const tacheVisee = listeDeTache.tachesAfaire.find(tache => tache._id.equals(req.body.tacheID))
 
         if (!tacheVisee) {
-            return res.status(404).json({ "erreur": `Tache ID=${req.body.tacheID} non trouvé, donc pas possible de mettre à jour` })
+            return res.status(404).json({
+                "erreur": `Tache ID=${req.body.tacheID} non trouvé, donc pas possible de mettre à jour`
+            })
         }
 
         tacheVisee.bTacheAccomplie = req.body.bTacheAccomplie
