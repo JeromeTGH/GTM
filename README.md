@@ -1,4 +1,4 @@
-# Projet GTM (backend) => en cours de développement
+# Projet GTM (backend)
 
 Le "Projet GTM (backend) est tout simplement un "Gestionnaire de Taches Mensuelles", développé à titre personnel, pour un usage personnel. C'est avant tout un projet d'apprentissage de NodeJS et quelque uns de ses modules (express, mongoose, bcrypt, …), ainsi que de MongoDB.
 
@@ -11,11 +11,11 @@ De manière secondaire, ce gestionnaire permettra également :
 - de gérer des tâches réalisables, pour chaque utilisateur (il sera là aussi possible de créer/voir/maj/supprimer des éléments)
 - de gérer des listes de tâches, définies et figées au 1er de chaque mois (en fonction des tâches réalisables "présentes", au 1er de chaque mois)
  
------ à vérifier ce qu'il est possible de faire ----- Nota : les envois de mails périodiques seront lancés via CRON, depuis un hébergement web, au niveau de l'API
+Nota : les envois de mails périodiques seront lancés via CRON, depuis un hébergement web, au niveau de l'API (requete GET à effectuer = api/listesdetaches/genereToutesLesListesMensuelles/).
 
 ## Sommaire
 1. [Fichiers/répertoires à créer](#fic-rep-a-creer)
-2. [Installation](#installation)
+2. [Liste de toutes les routes de l'API](#routes)
 3. [Divers](#divers)
 
 <a name="fic-rep-a-creer"></a>
@@ -29,12 +29,31 @@ Avant de pouvoir exécuter ce projet, il faudra penser à rajouter certains fich
 | ------------- |:-------------:|
 | Port d'accès au __serveur NodeJS__ (5000, par défaut) | PORT=5000 |
 | __Connection string__, pour l'accès à la base de données | DB_CONNECTION_STRING=mongodb+srv://username:pass@cluster/dbname  |
-| __Clef secrète__, pour json-web-token (jwt)) | CLEF_SECRETE=xxxxx |
+| __Clef secrète__, pour json-web-token (jwt) | CLEF_SECRETE=xxxxx |
 
-<a name="installation"></a>
-## Installation
+<a name="routes"></a>
+## Fichiers/répertoires à créer
 
-_à rédiger en fin de projet_.
+| Méthode d'appel | Chemin d'accès | Commentaires | Paramètres à fournir |
+| ------------- |:-------------:|:-------------:|:-------------:|
+| GET | getUserIdSiCookieJwtConforme | Renvoie l'ID de l'utilisateur connecté (ou 0, si aucun) | - |
+| POST | api/utilisateurs/postCreateUser | Permet la création d'un nouvel utilisateur | {"pseudo": "xxx", "email": "yyy", "password": "zzz"} |
+| POST | api/utilisateurs/postLogin | Permet à l'utilisateur de se connecter, à l'aide de son email et mot de passe | {"email": "xxx", "password": "yyy"} |
+| POST | api/utilisateurs/postLogout | Permet de déconnecter l'utilisateur "en cours" | - |
+| GET | api/utilisateurs/getAll | Retourne un tableau d'objets, avec tous les utilisateurs dedans | - |
+| GET | api/utilisateurs/getOne/xxxxxxx | Retourne les données utilisateur, dont l'ID est égal à "xxxxxxx" | - |
+| PUT | api/utilisateurs/updateOne/xxxxxxx | Met à jour les données utilisateur (pseudo, etat actif/inactif), dont l'ID est égal à "xxxxxxx" | { "pseudo": "yyy", "estActif": false } |
+| DELETE | api/utilisateurs/deleteOne/xxxxxxx | Supprime l'utilisateur, dont l'ID est égal à "xxxxxxx" | - |
+| PATCH | api/utilisateurs/addTask/xxxxxxx | Permet l'ajout d'une nouvelle tâche possible, pour un utilisateur donné (ayant l'ID égal à "xxxxxxx") | { "libelle": "yyy", "description": "zzz" } |
+| PATCH | api/utilisateurs/updateTask/xxxxxxx | Permet de modifier le libellé et la description d'une tâche possible, pour un utilisateur donné (ayant l'ID égal à "xxxxxxx") | { "old_libelle": "ancien yyy", "old_description": "ancien zzz", "new_libelle": "nouveau yyy", "new_description": "nouveau zzz" } |
+| PATCH | api/utilisateurs/removeTask/xxxxxxx | Permet l'enlever une tâche possible, pour un utilisateur donné (ayant l'ID égal à "xxxxxxx"), d'après son libellé et sa description | { "libelle": "yyy", "description": "zzz" } |
+| POST | api/listesdetaches/genereNouvelleListeDeTachesAfaire/xxxxxxx | Permet de générer une nouvelle liste de tâches à faire, pour l'utilisateur ayant l'ID numéro xxxxxxx | - |
+| GET | api/listesdetaches/getAllListesDeTachesAfaire/xxxxxxx | Permet d'afficher toutes les liste de tâches à faire, pour l'utilisateur ayant l'ID numéro xxxxxxx | - |
+| GET | api/listesdetaches/getListeDeTachesAfaire/xxxxxxx | Permet d'afficher la liste de tâches à faire, ayant pour ID le numéro xxxxxxx | - |
+| DELETE | api/listesdetaches/removeListeDeTachesAfaire/xxxxxxx | Permet de supprimer la liste de tâches à faire, ayant pour ID le numéro xxxxxxx | - |
+| PUT | api/listesdetaches/updateListeDeTachesAfaire/xxxxxxx | Permet de changer le timestampCloture d'une liste de tâches à faire, ayant pour ID le numéro xxxxxxx | - |
+| PATCH | api/listesdetaches/updateUneTacheDansListeDeTachesAfaire/xxxxxxx | Permet de changer l'état d'une tâche donnée (dire si elle est accomplie ou nom), listé dans une liste de tâches à faire, ayant pour ID le numéro xxxxxxx | { "tacheID": "yyy", "bTacheAccomplie": true ou false } |
+| GET | api/listesdetaches/genereToutesLesListesMensuelles/ | Permet de générer une série de listes de tâches à faire, une par utilisateur identifié en base, ayant un statut actif | - |
 
 <a name="divers"></a>
 ## Divers
