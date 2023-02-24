@@ -20,6 +20,9 @@ module.exports.addNewTaskList = async (req, res) => {
         if (!utilisateur)
             return res.status(400).json({ "erreur": `L'ID=${req.params.userID} ne correspond à aucun utilisateur en base (correspond à autre chose ou à un utilisateur supprimé)` })
 
+        if (!utilisateur.estActif)
+            return res.status(400).json({ "erreur": `Cet utilisateur est noté 'inactif' ; on ne peut donc pas lui créer de liste de tâches à faire, actuellement` })
+
         // Génération du tableau des tâches qu'il y aura à faire (à partir de la liste des tâches possibles, contenue dans le profil utilisateur)
         let tableauDesTachesAFaire = []
         utilisateur.tachespossibles.map(tache => {
@@ -166,6 +169,8 @@ module.exports.updateOneTaskInTaskList = async (req, res) => {
 
 // Ajout fonction genereAllMonthTaskLists dans API
 module.exports.genereAllMonthTaskLists = async (req, res) => {
+    let nbreDeUtilisateursTotal = 0
+    let nbreDeUtilisateursInactifs = 0
     let nbreDeListesGenerees = 0
 
     // Génération du texte "moisAnnee"
@@ -177,37 +182,48 @@ module.exports.genereAllMonthTaskLists = async (req, res) => {
     try {
         // Récupère la liste de tous les utilisateurs
         const utilisateurs = await ModeleUtilisateur.find()
+        nbreDeUtilisateursTotal = utilisateurs.length
 
-        for (let i = 0; i < utilisateurs.length; i++) {
+        for (let i = 0; i < nbreDeUtilisateursTotal; i++) {
 
             // Récupération des utilisateurs, un par un
             const utilisateur = utilisateurs[i]
 
-            // Génération du tableau des tâches qu'il y aura à faire (à partir de la liste des tâches possibles, contenue dans le profil utilisateur)
-            let tableauDesTachesAFaire = []
-            utilisateur.tachespossibles.forEach(tache => {
-                tableauDesTachesAFaire.push({
-                    libelleTache: tache[0],
-                    descriptionTache: tache[1],
-                    bTacheAccomplie: false
+            if (utilisateur.estActif) {
+
+
+                // Génération du tableau des tâches qu'il y aura à faire (à partir de la liste des tâches possibles, contenue dans le profil utilisateur)
+                let tableauDesTachesAFaire = []
+                utilisateur.tachespossibles.forEach(tache => {
+                    tableauDesTachesAFaire.push({
+                        libelleTache: tache[0],
+                        descriptionTache: tache[1],
+                        bTacheAccomplie: false
+                    })
                 })
-            })
 
-            if (tableauDesTachesAFaire.length > 0) {
-                // Génération du modèle de liste de tâches à faire
-                const chamspNouvelleListeDeTachesAfaire = {
-                    IDutilisateur: utilisateur._id,
-                    tachesAfaire: tableauDesTachesAFaire,
-                    libelleMoisAnnee: moisAnnee,
-                    timestampCloture: null
+                if (tableauDesTachesAFaire.length > 0) {
+                    // Génération du modèle de liste de tâches à faire
+                    const chamspNouvelleListeDeTachesAfaire = {
+                        IDutilisateur: utilisateur._id,
+                        tachesAfaire: tableauDesTachesAFaire,
+                        libelleMoisAnnee: moisAnnee,
+                        timestampCloture: null
+                    }
+
+                    // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
+                    const nouvelleTache = await ModeleListeDeTaches.create(chamspNouvelleListeDeTachesAfaire)
+                    nbreDeListesGenerees++
                 }
-
-                // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
-                const nouvelleTache = await ModeleListeDeTaches.create(chamspNouvelleListeDeTachesAfaire)
-                nbreDeListesGenerees++
+            } else {
+                nbreDeUtilisateursInactifs++
             }
         }
-        res.status(201).json({ 'nombreDeListesGénérées': nbreDeListesGenerees })
+        res.status(201).json({
+            'nombreTotalDutilisateurs': nbreDeUtilisateursTotal,
+            'nombreDutilisateursIncatifs': nbreDeUtilisateursInactifs,
+            'nombreDeListesGénérées': nbreDeListesGenerees
+        })
     }
     catch (err) {
         console.log(err)
