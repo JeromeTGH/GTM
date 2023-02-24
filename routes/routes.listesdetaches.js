@@ -11,5 +11,7 @@ routeur.delete('/removeListeDeTachesAfaire/:listeID', controleurListesDeTaches.r
 routeur.put('/updateListeDeTachesAfaire/:listeID', controleurListesDeTaches.updateOneTaskList)
 routeur.patch('/updateUneTacheDansListeDeTachesAfaire/:listeID', controleurListesDeTaches.updateOneTaskInTaskList)
 
+routeur.get('/genereToutesLesListesMensuelles/', controleurListesDeTaches.genereAllMonthTaskLists)
+
 // Fin, pour cette partie
 module.exports = routeur

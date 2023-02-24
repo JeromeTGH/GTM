@@ -30,18 +30,21 @@ module.exports.addNewTaskList = async (req, res) => {
             })
         })
 
-        // Génération du modèle de liste de tâches à faire
-        const chamspNouvelleListeDeTachesAfaire = {
-            IDutilisateur: req.params.userID,
-            tachesAfaire: tableauDesTachesAFaire,
-            libelleMoisAnnee: moisAnnee,
-            timestampCloture: null
+        if (tableauDesTachesAFaire.length > 0) {
+            // Génération du modèle de liste de tâches à faire
+            const chamspNouvelleListeDeTachesAfaire = {
+                IDutilisateur: req.params.userID,
+                tachesAfaire: tableauDesTachesAFaire,
+                libelleMoisAnnee: moisAnnee,
+                timestampCloture: null
+            }
+
+            // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
+            const nouvelleTache = await ModeleListeDeTaches.create(chamspNouvelleListeDeTachesAfaire)
+            res.status(201).json(nouvelleTache)
+        } else {
+            res.status(200).json({ "info": `Aucune liste de tâche n'a pu être créée pour cet utilisateur, car il n'avait aucune tâche possible d'enregistrée dans son profil` })
         }
-
-        // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
-        const nouvelleTache = await ModeleListeDeTaches.create(chamspNouvelleListeDeTachesAfaire)
-        res.status(201).json(nouvelleTache)
-
     }
     catch (err) {
         console.log(err)
@@ -154,6 +157,57 @@ module.exports.updateOneTaskInTaskList = async (req, res) => {
 
         const listDeTacheMiseAjour = await listeDeTache.save()
         res.status(200).send(listDeTacheMiseAjour)
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json(err)
+    }
+}
+
+// Ajout fonction genereAllMonthTaskLists dans API
+module.exports.genereAllMonthTaskLists = async (req, res) => {
+    let nbreDeListesGenerees = 0
+
+    // Génération du texte "moisAnnee"
+    const listeDeMois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+    const datetimeActuel = new Date()
+    const moisActuel = listeDeMois[datetimeActuel.getMonth()]
+    const moisAnnee = moisActuel + ' ' + datetimeActuel.getFullYear()
+
+    try {
+        // Récupère la liste de tous les utilisateurs
+        const utilisateurs = await ModeleUtilisateur.find()
+
+        for (let i = 0; i < utilisateurs.length; i++) {
+
+            // Récupération des utilisateurs, un par un
+            const utilisateur = utilisateurs[i]
+
+            // Génération du tableau des tâches qu'il y aura à faire (à partir de la liste des tâches possibles, contenue dans le profil utilisateur)
+            let tableauDesTachesAFaire = []
+            utilisateur.tachespossibles.forEach(tache => {
+                tableauDesTachesAFaire.push({
+                    libelleTache: tache[0],
+                    descriptionTache: tache[1],
+                    bTacheAccomplie: false
+                })
+            })
+
+            if (tableauDesTachesAFaire.length > 0) {
+                // Génération du modèle de liste de tâches à faire
+                const chamspNouvelleListeDeTachesAfaire = {
+                    IDutilisateur: utilisateur._id,
+                    tachesAfaire: tableauDesTachesAFaire,
+                    libelleMoisAnnee: moisAnnee,
+                    timestampCloture: null
+                }
+
+                // Et enregistrement de ce modèle de nouvelle liste de tâches à faire
+                const nouvelleTache = await ModeleListeDeTaches.create(chamspNouvelleListeDeTachesAfaire)
+                nbreDeListesGenerees++
+            }
+        }
+        res.status(201).json({ 'nombreDeListesGénérées': nbreDeListesGenerees })
     }
     catch (err) {
         console.log(err)
