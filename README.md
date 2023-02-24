@@ -16,7 +16,8 @@ Nota : les envois de mails périodiques seront lancés via CRON, depuis un hébe
 ## Sommaire
 1. [Fichiers/répertoires à créer](#fic-rep-a-creer)
 2. [Liste de toutes les routes de l'API](#routes)
-3. [Divers](#divers)
+3. [Installation](#installation)
+4. [Divers](#divers)
 
 <a name="fic-rep-a-creer"></a>
 ## Fichiers/répertoires à créer
@@ -55,9 +56,14 @@ Avant de pouvoir exécuter ce projet, il faudra penser à rajouter certains fich
 | PATCH | api/listesdetaches/updateUneTacheDansListeDeTachesAfaire/xxxxxxx | Permet de changer l'état d'une tâche donnée (dire si elle est accomplie ou nom), listé dans une liste de tâches à faire, ayant pour ID le numéro xxxxxxx | { "tacheID": "yyy", "bTacheAccomplie": true ou false } |
 | GET | api/listesdetaches/genereToutesLesListesMensuelles/ | Permet de générer une série de listes de tâches à faire, une par utilisateur identifié en base, ayant un statut actif | - |
 
+<a name="installation"></a>
+## Installation
+
+Faire un `npm install` dans le répertoire projet, pour installer toutes les librairies nécessaires (nota : cette commande va créer et loger toutes ces librairies dans un répertoire spécifique, nommé `node_modules`).
+
 <a name="divers"></a>
 ## Divers
 
-Projet d'apprentissage de NodeJS / Javascript / MongoDB.
+Projet d'apprentissage personnel de NodeJS / Javascript / MongoDB.
 
 @2023
