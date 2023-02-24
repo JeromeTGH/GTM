@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const routesRacine = require('./routes/routes.racine')
 const routesUtilisateur = require('./routes/routes.utilisateur')
-const listesDeTaches = require('./routes/routes.listesdetaches')
+const routesListesDeTaches = require('./routes/routes.listesdetaches')
 require('dotenv').config({ path: './config/.env' })
 require('./utils/bdd.util.js')
 const { recupInfosUtilisateurSiConnecte } = require('./middlewares/middleware.auth')
@@ -28,7 +28,7 @@ app.use('*', recupInfosUtilisateurSiConnecte)
 // Routes
 app.use('/', routesRacine)
 app.use('/api/utilisateurs', routesUtilisateur)
-app.use('/api/listesdetaches', listesDeTaches)
+app.use('/api/listesdetaches', routesListesDeTaches)
 
 // Serveur
 app.listen(process.env.PORT, () => {
