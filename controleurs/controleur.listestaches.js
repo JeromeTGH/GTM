@@ -8,9 +8,10 @@ module.exports.addNewTaskList = async (req, res) => {
         return res.status(400).json({ "erreur": `ID=${req.params.userID} non trouvé en base, donc impossible de trouver l'utilisateur correspondant` })
 
     // Génération du texte "moisAnnee"
+    const listeDeMois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
     const datetimeActuel = new Date()
-    const moisActuel = datetimeActuel.getMonth() + 1
-    const moisAnnee = moisActuel + '-' + datetimeActuel.getFullYear()
+    const moisActuel = listeDeMois[datetimeActuel.getMonth()]
+    const moisAnnee = moisActuel + ' ' + datetimeActuel.getFullYear()
 
     try {
         // Récupère la liste de tâches préenregistrées, par cet utilisateur
