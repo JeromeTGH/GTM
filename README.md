@@ -1,8 +1,8 @@
 # Projet GTM (backend)
 
-Le "Projet GTM (backend) est tout simplement un "Gestionnaire de Taches Mensuelles", développé à titre personnel, pour un usage personnel. C'est avant tout un projet d'apprentissage de NodeJS et quelque uns de ses modules (express, mongoose, bcrypt, …), ainsi que de MongoDB.
+Le __Projet GTM (backend)__ est tout simplement un "Gestionnaire de Taches Mensuelles", développé à titre personnel, pour un usage personnel. C'est avant tout un projet d'apprentissage de NodeJS (et de bon nombre de ses modules, comme express, mongoose, bcrypt, …), ainsi que de MongoDB.
 
-Ce gestionnaire de taches a principalement pour but de :
+Globalement, ce gestionnaire de taches aura pour but de :
 - envoyer des mails, avec liste de tâches à faire, le 1er de chaque mois, à chaque utilisateur inscrit
 - gérer le suivi (pointage) des tâches réalisées
 
@@ -10,7 +10,9 @@ De manière secondaire, ce gestionnaire permettra également :
 - de gérer une base d'utilisateurs (pseudo/email/mdp) ; il sera possible, de manière conditionnelle, de créer/voir/mettre à jour/effacer des utilisateurs
 - de gérer des tâches réalisables, pour chaque utilisateur (il sera là aussi possible de créer/voir/maj/supprimer des éléments)
 - de gérer des listes de tâches, définies et figées au 1er de chaque mois (en fonction des tâches réalisables "présentes", au 1er de chaque mois)
- 
+
+Ici, il s'agit da partie backend (API), de ce projet.
+
 Nota : les envois de mails périodiques seront lancés via CRON, depuis un hébergement web, au niveau de l'API (requete GET à effectuer = api/listesdetaches/genereToutesLesListesMensuelles/).
 
 ## Sommaire
