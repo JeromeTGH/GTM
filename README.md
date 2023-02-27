@@ -61,7 +61,7 @@ Avant de pouvoir exécuter ce projet, il faudra penser à rajouter certains fich
 <a name="installation"></a>
 ## Installation
 
-Faire un `npm install` dans le répertoire projet, pour installer toutes les librairies nécessaires (nota : cette commande va créer et loger toutes ces librairies dans un répertoire spécifique, nommé `node_modules`).
+Faire un `npm install` dans le répertoire projet, pour installer toutes les librairies nécessaires. Nota : cette commande va créer le répertoire `node_modules`, et mettre toutes ces bibliothèques dedans.
 
 <a name="divers"></a>
 ## Divers
