@@ -21,7 +21,7 @@ console.log("");
 // Création du serveur
 const app = express()
 
-// Déverrouillage du CORs
+// Déverrouillage du CORS
 const corsOptions = {
   origin: process.env.CLIENT_URL,
   credentials: true,
