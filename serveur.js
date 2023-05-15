@@ -9,6 +9,7 @@ const routesListesDeTaches = require('./routes/routes.listesdetaches')
 require('dotenv').config({ path: './config/.env' })
 require('./utils/bdd.util.js')
 const { recupInfosUtilisateurSiConnecte } = require('./middlewares/middleware.auth')
+const cors = require('cors');
 
 // Message d'invite
 console.log("");
@@ -19,6 +20,17 @@ console.log("");
 
 // Création du serveur
 const app = express()
+
+// Déverrouillage du CORs
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+  'allowedHeaders': ['sessionId', 'Content-Type'],
+  'exposedHeaders': ['sessionId'],
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'preflightContinue': false
+}
+app.use(cors(corsOptions));
 
 // Middlewares
 app.use(bodyParser.json())
