@@ -49,17 +49,21 @@ module.exports.login = async (req, res) => {
                 res.cookie('cookieJetonJWT', token, { httpOnly: true, maxAge: delaiExpirationCookie })
                 res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id })
             } else {
+				// Il faudrait reprendre cette partie, et "mieux" gérer tous ces retours 200
+				// (et ne laisser que les "vraies" erreurs 500 etc, au niveau du catch)
                 throw new Error("Password incorrect, désolé …")
             }
 
         } else {
+			// Il faudrait reprendre cette partie, et "mieux" gérer tous ces retours 200
+			// (et ne laisser que les "vraies" erreurs 500 etc, au niveau du catch)
             throw new Error("Email incorrect, désolé …")
         }
     }
     catch (err) {
         const messagesErreur = erreurDeConnexion(err)
         console.log(err);
-        res.status(500).json(messagesErreur)
+        res.status(200).json(messagesErreur)				// Nota : je n'ai pas mis "erreur 500" ici, pour simplifier la gestion côté front, avec axios ; cependant, cette partie est à reprendre, pour formuler une meilleure réponse
     }
 }
 
