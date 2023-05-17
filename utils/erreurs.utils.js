@@ -15,23 +15,34 @@ module.exports.erreurCreationNouvelUtilisateur = (err) => {
                 tableauErreurs.pseudo = `Le pseudo choisi n'est pas suffisament long (minimum = ${err.errors.pseudo.properties.minlength} caractères)`
             if (err.errors.pseudo.properties.type === 'maxlength')
                 tableauErreurs.pseudo = `Le pseudo choisi est trop long (maximum = ${err.errors.pseudo.properties.maxlength} caractères)`
-        } else if (err.errors.password) {
+            if (err.errors.pseudo.properties.type === 'required')
+                tableauErreurs.pseudo = `Le pseudo est manquant`
+        }
+		if (err.errors.email) {
+            if (err.errors.email.properties.type === 'maxlength')
+                tableauErreurs.email = `L'email choisi est trop long (maximum = ${err.errors.email.properties.maxlength} caractères)`
+            if (err.errors.email.properties.type === 'required')
+                tableauErreurs.email = `L'email est manquant`
+			if(err.errors.email.properties.message.includes("Validator"))
+				tableauErreurs.email = `Format d'email incorrect`
+        } 
+		if (err.errors.password) {
             if (err.errors.password.properties.type === 'minlength')
                 tableauErreurs.password = `Le password choisi n'est pas suffisament long (minimum = ${err.errors.password.properties.minlength} caractères)`
             if (err.errors.password.properties.type === 'maxlength')
                 tableauErreurs.password = `Le password choisi est trop long (maximum = ${err.errors.password.properties.maxlength} caractères)`
-        } else if (err.errors.email) {
-            if (err.errors.email.properties.type === 'maxlength')
-                tableauErreurs.email = `L'email choisi est trop long (maximum = ${err.errors.email.properties.maxlength} caractères)`
-        } else {
-            tableauErreurs.pseudo = `Autre erreur (postCreateUser)`
-            tableauErreurs.email = `Autre erreur (postCreateUser)`
-            tableauErreurs.password = `Autre erreur (postCreateUser)`
+            if (err.errors.password.properties.type === 'required')
+                tableauErreurs.password = `Le password est manquant`
+		}
+        if (!err.errors.pseudo && !err.errors.email && !err.errors.password) {
+            tableauErreurs.pseudo = `Autre erreur (postCreateUser errors)`
+            tableauErreurs.email = `Autre erreur (postCreateUser errors)`
+            tableauErreurs.password = `Autre erreur (postCreateUser errors)`
         }
     } else {
-        tableauErreurs.pseudo = `Autre erreur (postCreateUser)`
-        tableauErreurs.email = `Autre erreur (postCreateUser)`
-        tableauErreurs.password = `Autre erreur (postCreateUser)`
+        tableauErreurs.pseudo = `Autre erreur (postCreateUser general)`
+        tableauErreurs.email = `Autre erreur (postCreateUser general)`
+        tableauErreurs.password = `Autre erreur (postCreateUser general)`
     }
 
     return tableauErreurs

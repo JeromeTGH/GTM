@@ -14,6 +14,7 @@ const creerUnTokenDepuis = (id) => {
 
 // Ajout fonction createUser dans API
 module.exports.createUser = async (req, res) => {
+	
     try {
         // Objet représentant les champs personnalisés, pour la création de ce nouvel utilisateur
         const champsNouvelUtilisateur = {
@@ -21,15 +22,33 @@ module.exports.createUser = async (req, res) => {
             email: req.body.email,
             password: req.body.password
         }
+		
+		// Premier niveau de détection d'erreurs
+		let erreur = {};
+		erreur = { errors : {} };
+		
+		if(req.body.pseudo === '')
+			erreur.errors.pseudo = {properties: { type: 'required' }};
+		if(req.body.email === '')
+			erreur.errors.email = {properties: { type: 'required' }};
+		if(req.body.password === '')
+			erreur.errors.password = {properties: { type: 'required' }};
+	
+		// Traitement
+		if(erreur.errors.pseudo || erreur.errors.email || erreur.errors.password) {
+			const messagesErreur = erreurCreationNouvelUtilisateur(erreur)
+			res.status(200).json(messagesErreur) // Erreur 200 à la place de 400, pour une gestion plus "facile", avec axios
+		} else {
+			// Enregistrement en base (et récupération des infos, complétées avec l'id et autre)
+			const utilisateurCreeEnBase = await ModeleUtilisateur.create(champsNouvelUtilisateur)
 
-        // Enregistrement en base (et récupération des infos, complétées avec l'id et autre)
-        const utilisateurCreeEnBase = await ModeleUtilisateur.create(champsNouvelUtilisateur)
+			res.status(201).json({ idNouvelUtilisateur: utilisateurCreeEnBase._id })
+		}
 
-        res.status(201).json({ idNouvelUtilisateur: utilisateurCreeEnBase._id })
     }
     catch (err) {
         const messagesErreur = erreurCreationNouvelUtilisateur(err)
-        res.status(400).json(messagesErreur)
+        res.status(200).json(messagesErreur) // Erreur 200 à la place de 400, pour une gestion plus "facile", avec axios
     }
 }
 
