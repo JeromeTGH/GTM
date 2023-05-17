@@ -22,9 +22,10 @@ module.exports.erreurCreationNouvelUtilisateur = (err) => {
             if (err.errors.email.properties.type === 'maxlength')
                 tableauErreurs.email = `L'email choisi est trop long (maximum = ${err.errors.email.properties.maxlength} caractères)`
             if (err.errors.email.properties.type === 'required')
-                tableauErreurs.email = `L'email est manquant`
-			if(err.errors.email.properties.message.includes("Validator"))
-				tableauErreurs.email = `Format d'email incorrect`
+				tableauErreurs.email = `L'email est manquant`
+			if(err.errors.email.properties.message)
+				if(err.errors.email.properties.message.includes("Validator"))
+					tableauErreurs.email = `Format d'email incorrect`
         } 
 		if (err.errors.password) {
             if (err.errors.password.properties.type === 'minlength')
@@ -40,6 +41,7 @@ module.exports.erreurCreationNouvelUtilisateur = (err) => {
             tableauErreurs.password = `Autre erreur (postCreateUser errors)`
         }
     } else {
+		console.log(err)
         tableauErreurs.pseudo = `Autre erreur (postCreateUser general)`
         tableauErreurs.email = `Autre erreur (postCreateUser general)`
         tableauErreurs.password = `Autre erreur (postCreateUser general)`
