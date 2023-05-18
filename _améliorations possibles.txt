@@ -1,0 +1,4 @@
+
+- ajouter horodata aux retours console
+- ajout un peu plus de détail en console, pour le débuggage (création réussie, champ manquant, etc)
+
