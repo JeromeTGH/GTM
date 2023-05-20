@@ -18,7 +18,7 @@ const schemaUtilisateur = new mongoose.Schema(
             validate: [isEmail],
             lowercase: true,
             maxlength: 256,
-            select: false,
+            //select: false,	==> si on souhaite ne pas intégrer ce champ dans les réponses
             trim: true
         },
         password: {

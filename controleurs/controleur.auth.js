@@ -66,7 +66,8 @@ module.exports.login = async (req, res) => {
             if (auth) {
                 const token = creerUnTokenDepuis(utilisateur._id)
                 res.cookie('cookieJetonJWT', token, { httpOnly: true, maxAge: delaiExpirationCookie })
-                res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id, pseudo: utilisateur.pseudo })
+                //res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id, pseudo: utilisateur.pseudo })
+				res.status(200).json({ connexion: "reussie" })
             } else {
 				// Il faudrait reprendre cette partie, et "mieux" gérer tous ces retours 200
 				// (et ne laisser que les "vraies" erreurs 500 etc, au niveau du catch)
