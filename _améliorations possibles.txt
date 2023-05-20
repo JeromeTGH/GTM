@@ -2,3 +2,8 @@
 - ajouter horodata aux retours console
 - ajout un peu plus de détail en console, pour le débuggage (création réussie, champ manquant, etc)
 
+- Dans id root :
+	-> div class "1 bloc centré"
+	-> div class "1 bloc centre avec footer"
+	-> div class "3 bloc, min auto min"
+

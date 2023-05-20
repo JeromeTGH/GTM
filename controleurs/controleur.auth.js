@@ -58,7 +58,7 @@ module.exports.login = async (req, res) => {
         const email = req.body.email
         const password = req.body.password
 
-        const utilisateur = await ModeleUtilisateur.findOne({ email: email }).select('password')
+        const utilisateur = await ModeleUtilisateur.findOne({ email: email }).select(['password', 'pseudo'])
 
         if (utilisateur) {
             const auth = await bcrypt.compare(password, utilisateur.password)
@@ -66,7 +66,7 @@ module.exports.login = async (req, res) => {
             if (auth) {
                 const token = creerUnTokenDepuis(utilisateur._id)
                 res.cookie('cookieJetonJWT', token, { httpOnly: true, maxAge: delaiExpirationCookie })
-                res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id })
+                res.status(200).json({ connexion: "reussie", idUtilisateur: utilisateur._id, pseudo: utilisateur.pseudo })
             } else {
 				// Il faudrait reprendre cette partie, et "mieux" gérer tous ces retours 200
 				// (et ne laisser que les "vraies" erreurs 500 etc, au niveau du catch)
