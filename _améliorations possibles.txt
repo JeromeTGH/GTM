@@ -2,8 +2,6 @@
 - ajouter horodata aux retours console
 - ajout un peu plus de détail en console, pour le débuggage (création réussie, champ manquant, etc)
 
-- Dans id root :
-	-> div class "1 bloc centré"
-	-> div class "1 bloc centre avec footer"
-	-> div class "3 bloc, min auto min"
+- chaque nouvel appel de fonction (hors connexion) devrait vérifier la présence d'un cookie viable (req.cookies(jwt))
+- les fonctions appelées ne devraient retourner que le strict minimum d'infos (et rien de sensible), et pourquoi pas, se limiter en terme de nombre de lignes retournées (suivant contexte, bien entendu)
 
