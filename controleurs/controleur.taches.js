@@ -5,14 +5,21 @@ const ObjectID = require('mongoose').Types.ObjectId
 module.exports.addTask = async (req, res) => {
     if (!ObjectID.isValid(req.params.userID))
         return res.status(400).json({ "erreur": `ID=${req.params.userID} non trouvé en base, donc impossible de trouver l'utilisateur correspondant` })
+	
+	//if(!req.body.libelle && !req.body.description)
+	//	return res.status(400).json({ "erreur": `Les valeurs 'libelle' et 'description' n'ont pas toutes deux été passées, avant appel de cette fonction` })
 
     try {
         const tableau = [req.body.libelle, req.body.description]
 
+		//if(req.body.libelle === '' || req.body.description === '')
+		if(!req.body.libelle || !req.body.description)	
+			return res.status(200).json({ "erreur": `Le titre et la description d'une tâche doivent être renseignés (pas de champ vide accepté ici)` })
+
         const utilisateurMisAjour = await ModeleUtilisateur.findByIdAndUpdate(
             req.params.userID,
             { $addToSet: { tachespossibles: tableau } },
-            { new: true }
+            { new: true, runValidators: true }
         )
 
         if (!utilisateurMisAjour)
@@ -22,7 +29,7 @@ module.exports.addTask = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json(err)
+        res.status(200).json({ "erreur": err })
     }
 }
 
