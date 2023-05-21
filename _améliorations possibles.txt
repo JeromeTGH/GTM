@@ -5,3 +5,4 @@
 - chaque nouvel appel de fonction (hors connexion) devrait vérifier la présence d'un cookie viable (req.cookies(jwt))
 - les fonctions appelées ne devraient retourner que le strict minimum d'infos (et rien de sensible), et pourquoi pas, se limiter en terme de nombre de lignes retournées (suivant contexte, bien entendu)
 
+- mettre {runValidators: true } au niveau des requêtes mongoose, pour faire vérifier les minlenght et maxlenght (en cas d'update etc)

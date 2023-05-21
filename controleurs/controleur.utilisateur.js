@@ -48,7 +48,7 @@ module.exports.updateOne = async (req, res) => {
         champsAmettreAjour['estActif'] = req.body.estActif
 
     try {
-        const utilisateurMisAjour = await ModeleUtilisateur.findByIdAndUpdate(req.params.userID, champsAmettreAjour, { new: true })
+        const utilisateurMisAjour = await ModeleUtilisateur.findByIdAndUpdate(req.params.userID, champsAmettreAjour, { new: true, runValidators: true })
         // {new: true} : pour retourner l'élément APRÈS avoir fait l'update
         if (!utilisateurMisAjour)
             res.status(400).json({ "erreur": `La mise à jour de l'utilisateur a renvoyé une valeur nulle, et n'a donc pu se faire (vérifier si le userID envoyé est bon, par exemple)` })
@@ -57,7 +57,7 @@ module.exports.updateOne = async (req, res) => {
     }
     catch (err) {
         console.log(err)
-        res.status(500).json(err)
+        res.status(200).json(err)			// Status 200 aulieu de 500, pour être traité "plus facilement", côté axios
     }
 }
 
